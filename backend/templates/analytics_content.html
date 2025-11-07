@@ -1,0 +1,87 @@
+<!-- analytics_content.html -->
+<h2 class="text-xl font-semibold mb-2">Analytics</h2>
+
+<!--  Wrap content in a two-column grid layout -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+  
+  <!-- Left Column: Maps -->
+  <div>
+    <!-- Patrol Coverage Map -->
+    <section class="mb-8">
+      <h2 class="text-lg font-semibold mb-2">Patrol Coverage Map</h2>
+      <div class="bg-gray-800 rounded-lg h-64 flex items-center justify-center text-gray-500">
+        [Map Placeholder]
+      </div>
+    </section>
+
+    <!-- Motion Detection Heatmaps -->
+    <section class="mb-8">
+      <h2 class="text-lg font-semibold mb-2">Motion Detection Heatmaps</h2>
+      <div class="bg-gray-800 rounded-lg h-64 flex items-center justify-center text-gray-500">
+        [Heatmap Placeholder]
+      </div>
+    </section>
+  </div>
+
+  <!-- Right Column: Stats and Trends -->
+  <div>
+    <!-- Robot Utilization -->
+    <section class="mb-8">
+      <h2 class="text-lg font-semibold mb-4">Robot Utilization</h2>
+      <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <p class="text-sm text-gray-400">Active vs. Idle Time</p>
+            <p class="text-2xl font-bold">75%</p>
+            <p class="text-xs text-green-400">Last 30 Days +10%</p>
+          </div>
+        </div>
+        <div class="flex space-x-4">
+          <div class="flex flex-col items-center">
+            <div class="w-4 h-24 bg-gray-700 relative">
+              <div class="absolute bottom-0 w-4 bg-gray-300" style="height: 75%"></div>
+            </div>
+            <p class="text-xs mt-1">Active</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-4 h-24 bg-gray-700 relative">
+              <div class="absolute bottom-0 w-4 bg-gray-300" style="height: 25%"></div>
+            </div>
+            <p class="text-xs mt-1">Idle</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intrusion Trends -->
+    <section class="mb-8">
+      <h2 class="text-lg font-semibold mb-4">Intrusion Trends</h2>
+      <div class="bg-gray-900 border border-gray-800 rounded-lg p-4">
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <p class="text-sm text-gray-400">Intrusions Over Time</p>
+            <p class="text-2xl font-bold">5</p>
+            <p class="text-xs text-red-400">Last 30 Days -5%</p>
+          </div>
+        </div>
+        <div class="w-full h-24 flex items-end justify-between">
+          <canvas id="utilizationChart" height="100"></canvas>
+        </div>
+        <div class="flex justify-between text-xs text-gray-400 mt-2">
+          <span>Week 1</span>
+          <span>Week 2</span>
+          <span>Week 3</span>
+          <span>Week 4</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div>
+
+<!-- ... existing code ... -->
+<!-- Export Buttons -->
+<div class="flex space-x-4">
+  <button class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600">Export as PDF</button>
+  <button class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600">Export as CSV</button>
+</div>

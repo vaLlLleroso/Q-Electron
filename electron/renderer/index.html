@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>quarero dash</title></head>
+<body>
+  <h2>quarero electron test</h2>
+  <button id="ping">ping flask</button>
+  <pre id="out"></pre>
+  <script>
+    document.getElementById('ping').onclick = async () => {
+      const r = await fetch(`${window.backend.api}/coords`);
+      document.getElementById('out').textContent = await r.text();
+    };
+  </script>
+</body>
+</html>

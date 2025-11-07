@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Maintenance{% endblock %}
+{% block body %}
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gray-900 border-r border-gray-800 p-6">
+    <h1 class="text-lg font-semibold mb-8">Stingray 1</h1>
+    <nav class="space-y-2">
+      <a href="#dashboard" class="flex items-center space-x-3 text-gray-300 hover:text-white nav-link" data-page="dashboard">
+        <span class="material-symbols-outlined">house</span>
+        <span>Overview</span>
+      </a>
+      <a href="#patrol" class="flex items-center space-x-3 text-gray-300 hover:text-white nav-link" data-page="patrol">
+        <span class="material-symbols-outlined">map</span>
+        <span>Route</span>
+      </a>
+      <a href="#maintenance" class="flex items-center space-x-3 bg-gray-800 rounded-md px-3 py-2 nav-link" data-page="maintenance">
+          <span class="material-symbols-outlined">handyman</span>
+        <span>Maintenance</span>
+      </a>
+      <a href="#analytics" class="flex items-center space-x-3 text-gray-300 hover:text-white nav-link" data-page="analytics">
+          <span class="material-symbols-outlined">analytics</span>
+        <span>Analytics</span>
+      </a>
+    </nav>
+  </aside>
+</div>
+<script src="{{ url_for('static', filename='navi.js') }}"></script>
+<script src="{{ url_for('static', filename='battery.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,204 @@
+<!-- Grid Container for Left and Right Columns -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+  
+  <!-- Left Column -->
+  <div class="xl:col-span-2 flex flex-col gap-6">
+
+    <!-- Main Live Feed -->
+    <div>
+      <h2 class="text-xl font-semibold mb-2">Stingray SR 1 Live View</h2>
+      <div class="bg-black rounded overflow-hidden relative" style="height: 590px;">
+        <img id="liveFeed" src="{{ url_for('video_feed') }}" alt="Live View" 
+             class="w-full opacity-80 live-feed" style="height: 100%; object-fit: cover;">
+        <!-- Fallback message -->
+        <div id="offlineMsg" class="absolute inset-0 flex items-center justify-center text-white text-xl bg-black bg-opacity-70 hidden">
+          <div class="text-center">
+            <div class="mb-2">Live View Offline</div>
+            <div class="text-sm text-gray-400" id="errorDetails"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const img = document.getElementById('liveFeed');
+      const offlineMsg = document.getElementById('offlineMsg');
+      const errorDetails = document.getElementById('errorDetails');
+
+      // Check video feed connectivity
+      function checkVideoFeed() {
+        fetch('{{ url_for("video_feed") }}', { method: 'HEAD' })
+          .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            offlineMsg.classList.add('hidden');
+            img.classList.remove('hidden');
+          })
+          .catch(error => {
+            console.error('Video feed error:', error);
+            offlineMsg.classList.remove('hidden');
+            img.classList.add('hidden');
+            errorDetails.textContent = `Error: ${error.message}. Retrying...`;
+            setTimeout(checkVideoFeed, 5000); // Retry every 5 seconds
+          });
+      }
+
+      // Initial check
+      checkVideoFeed();
+
+      // Handle image load errors
+      img.onerror = function () {
+        offlineMsg.classList.remove('hidden');
+        img.classList.add('hidden');
+        errorDetails.textContent = 'Failed to load video feed. Retrying...';
+        setTimeout(checkVideoFeed, 5000);
+      };
+
+      // Handle successful image load
+      img.onload = function() {
+        offlineMsg.classList.add('hidden');
+        img.classList.remove('hidden');
+      };
+    </script>
+
+    <!-- Consolidated Video Footage -->
+    <div>
+      <h2 class="text-xl font-semibold mb-2">Consolidated Video Footage</h2>
+      <div class="grid grid-cols-3 gap-3">
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column -->
+  <div class="flex flex-col gap-6">
+
+    <!-- Robot Location -->
+    <div>
+      <h2 class="text-xl font-semibold mb-2">Robot Location</h2>
+      <div id="mapLoc" class="rounded w-full" style="height: 350px;"></div>
+    </div>
+
+    <!-- Event Log -->
+    <div>
+      <h2 class="text-xl font-semibold mb-2">Event Log</h2>
+      <div class="bg-gray-800 p-4 rounded overflow-auto max-h-64">
+        <table class="w-full text-sm text-left text-gray-300">
+          <thead class="text-xs text-gray-400 uppercase border-b border-gray-600">
+            <tr>
+              <th class="py-2">Timestamp</th>
+              <th class="py-2">Event Type</th>
+              <th class="py-2">Description</th>
+            </tr>
+          </thead>
+          <tbody id="incident_list"><!-- Changed from <div> to <tbody> and added id -->
+            <!-- Incident rows will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+      <script>
+      (function loadIncidents() {
+        const incidentList = document.getElementById('incident_list');
+        
+        fetch('/incidents')
+          .then(function(response) {
+            if (!response.ok) {
+              throw new Error('HTTP error! status: ' + response.status);
+            }
+            return response.json();
+          })
+          .then(function(data) {
+            if (!Array.isArray(data)) {
+              throw new Error('Expected array of incidents');
+            }
+            incidentList.innerHTML = '';
+            data.forEach(function(incident) {
+              const row = document.createElement('tr');
+              row.innerHTML = 
+                '<td class="py-2">' + (incident.timestamp || '') + '</td>' +
+                '<td class="py-2">' + (incident.event_type || incident.type || '') + '</td>' +
+                '<td class="py-2">' + (incident.description || '') + '</td>';
+              incidentList.appendChild(row);
+            });
+          })
+          .catch(function(error) {
+            console.error('Error occurred:', error);
+            incidentList.innerHTML = 
+              '<tr><td colspan="3" class="py-4 text-center text-gray-500">' +
+              'Unable to load incidents data</td></tr>';
+          });
+      })();
+      </script>
+    </div>
+
+    <!-- Remote Control -->
+    <div>
+      <h2 class="text-xl font-semibold mb-2">Remote Control</h2>
+      <div class="bg-gray-800 p-4 rounded flex flex-col gap-4">
+
+        <!-- Bars for Throttle & Brake -->
+        <div class="flex flex-col gap-2 text-sm text-gray-100">
+          <div>
+            <span class="block mb-1">Throttle (R2)</span>
+            <div class="w-full h-4 bg-gray-600 rounded overflow-hidden">
+              <div id="throttleBar" class="bg-green-500 h-full transition-all duration-100" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div>
+            <span class="block mb-1">Brake (L2)</span>
+            <div class="w-full h-4 bg-gray-600 rounded overflow-hidden">
+              <div id="brakeBar" class="bg-red-500 h-full transition-all duration-100" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Joysticks -->
+        <div class="flex gap-6 justify-between text-sm text-gray-100 min-h-[6rem]">
+          <div class="flex flex-col items-center">
+            <span class="mb-1">Steering (LS)</span>
+            <div class="w-24 h-24 shrink-0 bg-gray-700 border border-gray-500 rounded-full relative">
+              <div id="leftDot"
+                class="w-4 h-4 bg-white rounded-full absolute transition-transform"
+                style="top: 50%; left: 50%; transform: translate(-50%, -50%) translate(0px, 0px);">
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-center items-center mt-6 gap-4">
+            <button id="buttonSquare" class="w-14 h-14 flex items-center justify-center bg-gray-700 text-white rounded-full shadow transition hover:bg-gray-600">
+              <span class="material-symbols-outlined text-2xl">check_box_outline_blank</span>
+            </button>
+            <button id="buttonX" class="w-14 h-14 flex items-center justify-center bg-gray-700 text-white rounded-full shadow transition hover:bg-gray-600">
+              <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+            <button id="buttonO" class="w-14 h-14 flex items-center justify-center bg-gray-700 text-white rounded-full shadow transition hover:bg-gray-600">
+              <span class="material-symbols-outlined text-2xl">circle</span>
+            </button>
+            <button id="buttonL1" class="w-14 h-14 flex items-center justify-center bg-gray-700 text-white rounded-full shadow transition hover:bg-gray-600 text-base font-bold">
+              L1
+            </button>
+          </div>
+
+          <div class="flex flex-col items-center">
+            <span class="mb-1">Camera Look (RS)</span>
+            <div class="w-24 h-24 shrink-0 bg-gray-700 border border-gray-500 rounded-full relative">
+              <div id="rightDot"
+                class="w-4 h-4 bg-white rounded-full absolute transition-transform"
+                style="top: 50%; left: 50%; transform: translate(-50%, -50%) translate(0px, 0px);">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="text-xs text-gray-400 text-right">
+          <span id="controllerStatus" class="text-red-400">● Status: Disconnected</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- Ensure dashboard scripts run when content is injected -->
+<script src="{{ url_for('static', filename='mapControl.js') }}"></script>
+<script src="{{ url_for('static', filename='controller.js') }}"></script>

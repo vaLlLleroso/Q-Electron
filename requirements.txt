@@ -1,0 +1,5 @@
+flask
+opencv-python-headless
+requests
+psycopg2-binary
+python-dotenv

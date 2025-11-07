@@ -1,0 +1,43 @@
+{
+  "name": "q-electron",
+  "version": "0.0.1",
+  "description": "Quarero Dashboard Application",
+  "keywords": [],
+  "homepage": "https://github.com/vaLlLleroso/Q-Electron#readme",
+  "bugs": {
+    "url": "https://github.com/vaLlLleroso/Q-Electron/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaLlLleroso/Q-Electron.git"
+  },
+  "license": "ISC",
+  "author": "Joaquin V.",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "dev": "electronmon .",
+    "postinstall": "python -m pip install -r ../requirements.txt",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.0",
+    "electron-squirrel-startup": "^1.0.1",
+    "python-shell": "^5.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.10.2",
+    "@electron-forge/maker-deb": "^7.10.2",
+    "@electron-forge/maker-rpm": "^7.10.2",
+    "@electron-forge/maker-squirrel": "^7.10.2",
+    "@electron-forge/maker-zip": "^7.10.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.10.2",
+    "@electron-forge/plugin-fuses": "^7.10.2",
+    "@electron/fuses": "^1.8.0",
+    "electron": "^39.1.0",
+    "electronmon": "^2.0.3"
+  },
+  "productName": "Quarero Control Panel"
+}
