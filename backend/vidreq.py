@@ -5,6 +5,7 @@ import os
 app = Flask(__name__)
 RTSP_URL = os.getenv("RTSP_URL", "rtsp://192.168.1.174:554/ch01/1")  # Ensure DISPLAY is set for GUI operations
 
+<<<<<<< Updated upstream
 # RTSP stream URL
 cap = cv2.VideoCapture(RTSP_URL)
 if not cap.isOpened():
@@ -13,6 +14,19 @@ else:
     print("✅ Stream is live")
 
 # cap.release()
+=======
+# Video capture singleton
+_video_capture = None
+def get_video_capture():
+    global _video_capture
+    if _video_capture is None or not _video_capture.isOpened():
+        _video_capture = cv2.VideoCapture(RTSP_URL)
+        if not _video_capture.isOpened():
+            print(f"[BAD] Could not open stream at {RTSP_URL}")
+        else:
+            print("[GOOD] Stream is live")
+    return _video_capture
+>>>>>>> Stashed changes
 
 def generate_frames():
     print("starting generate_frames loop", flush=True)

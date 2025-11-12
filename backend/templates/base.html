@@ -35,10 +35,12 @@
     <div class="flex gap-6 text-sm text-gray-300">
       <a href="#" class="hover:text-white nav-link" data-page="dashboard">Dashboard</a>
       <a href="#" class="hover:text-white nav-link" data-page="patrol">Patrol Schedule</a>
-      <a href="#" class="hover:text-white nav-link" data-page="maintenance">Maintenance</a>
-      <a href="#" class="hover:text-white nav-link" data-page="analytics">Analytics</a>
     </div>
-    <div class="flex items-center gap-4 ml-6">
+    <div class="flex items-center text-sm text-gray-300 gap-3 ml-12">
+          <span class="material-symbols-outlined text-2xl" id="batteryIcon">battery_android_full</span>
+          <span id="batteryPercent">--%</span>
+    </div>
+    <div class="flex items-center gap-3 ml-6">
       <button 
         class="w-8 h-8 rounded-full flex items-center justify-center text-white shadow transition hover:bg-gray-600 nav-link" 
         data-page="settings">
@@ -77,6 +79,7 @@
 
   <!-- Core scripts -->
   <script src="{{ url_for('static', filename='router.js') }}"></script>
+  <script src="{{ url_for('static', filename='battery.js') }}"></script>
   <!-- Page-specific scripts -->
   {% block scripts %}{% endblock %}
 </body>

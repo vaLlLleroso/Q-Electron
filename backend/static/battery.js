@@ -69,6 +69,37 @@ function setBatteryHUD({ voltage, soc, charging = false }) {
   }
 }
 
+function updateBatteryDisplay(percent) {
+  const icon = document.getElementById("batteryIcon");
+  const percentText = document.getElementById("batteryPercent");
+
+  percentText.textContent = `${percent}%`;
+
+  let iconName;
+
+  switch (true) {
+    case (percent >= 90):
+      iconName = "battery_android_full";
+      break;
+    case (percent >= 70):
+      iconName = "battery_android_5";
+      break;
+    case (percent >= 50):
+      iconName = "battery_android_4";
+      break;
+    case (percent >= 30):
+      iconName = "battery_android_2";
+      break;
+    case (percent >= 10):
+      iconName = "battery_android_frame_1";
+      break;
+    default:
+      iconName = "battery_android_question";
+  }
+
+  icon.textContent = iconName;
+}
+
 // Akku-Daten abrufen und anzeigen
 async function fetchBattery() {
   try {
